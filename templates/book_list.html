@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+{% block content_header %}
+  <h2>Books</h2>
+  <button type="Goto" class="btn btn-brand"><a href="{% url 'upload_book' %}">Upload Book</a></button>
+{% endblock %}
+  <table class="table mb-0">
+    <thead>
+      <tr>
+        <th>Cover</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Download</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for book in books %}
+        <tr>
+          <td>
+            {% if book.cover %}
+              <img src="{{book.cover.url}}" alt="{{book.title}}">
+            {% else %}
+              <span class="text-muted">No cover</span>
+            {% endif %}
+          </td>
+          <th>{{book.title}}</th>
+          <th>{{book.auth}}</th>
+          <th><a href="{{book.file.url}}" class="btn btn-primary btn-sm" target="_blank">Download</a></th>
+          <td>
+            <form method="post" action="{% url 'delete_book' book.pk %}" >
+              {% csrf_token %}
+              <button type="Submit"  class="btn btn-danger btm-sm">Delete</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
